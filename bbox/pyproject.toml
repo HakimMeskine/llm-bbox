@@ -1,0 +1,92 @@
+# ESP32 Button Box - Project Configuration
+# TOML Configuration File
+
+[project]
+name = "esp32-button-box"
+version = "1.0.0"
+description = "ESP32-based button box with 20 buttons, 2 rotary encoders, and a funky switch"
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.4"  # MicroPython compatibility
+
+[hardware]
+# Hardware component configuration
+
+[hardware.button_matrix]
+# Rows are outputs, columns are inputs with pull-up
+row_pins = [32, 33, 25, 26, 27]  # GPIO pins for rows
+col_pins = [14, 12, 13, 15]      # GPIO pins for columns
+
+# Button Matrix Layout (5x4 grid)
+# This maps the button positions to logical button numbers
+button_map = [
+    [ 1,  2,  3,  4],  # Row 1
+    [ 5,  6,  7,  8],  # Row 2
+    [ 9, 10, 11, 12],  # Row 3
+    [13, 14, 15, 16],  # Row 4
+    [17, 18, 19, 20]   # Row 5
+]
+
+[hardware.rotary_encoders]
+# Rotary Encoder 1 Configuration
+encoder1_clk_pin = 4    # GPIO pin for CLK (A)
+encoder1_dt_pin = 16    # GPIO pin for DT (B)
+encoder1_sw_pin = 17    # GPIO pin for switch (push button)
+
+# Rotary Encoder 2 Configuration
+encoder2_clk_pin = 5    # GPIO pin for CLK (A)
+encoder2_dt_pin = 18    # GPIO pin for DT (B)
+encoder2_sw_pin = 19    # GPIO pin for switch (push button)
+
+[hardware.funky_switch]
+# RJXT1F 7-way Encoder (Funky Switch) Configuration
+up_pin = 21             # GPIO pin for Up direction
+down_pin = 22           # GPIO pin for Down direction
+left_pin = 23           # GPIO pin for Left direction
+right_pin = 2           # GPIO pin for Right direction
+up_left_pin = 0         # GPIO pin for Up-Left direction
+up_right_pin = 39       # GPIO pin for Up-Right direction
+down_left_pin = 35      # GPIO pin for Down-Left direction
+down_right_pin = 34     # GPIO pin for Down-Right direction
+sw_pin = 36             # GPIO pin for switch (push button)
+
+[hardware.status_leds]
+# Status LED Configuration
+led1_pin = 10           # GPIO pin for status LED 1
+led2_pin = 9            # GPIO pin for status LED 2
+
+[interface.usb]
+# USB HID Configuration
+enabled = true          # Set to false to disable USB HID functionality
+vendor_id = 0x1234      # Example vendor ID (you should use your own)
+product_id = 0x5678     # Example product ID (you should use your own)
+manufacturer = "Custom"
+product = "ESP32 Button Box"
+
+[interface.wifi]
+# WiFi Configuration (if needed)
+enabled = false         # Set to true to enable WiFi
+ssid = ""               # WiFi network name
+password = ""           # WiFi password
+
+[interface.bluetooth]
+# Bluetooth Configuration (if needed)
+enabled = false         # Set to true to enable Bluetooth
+name = "ESP32ButtonBox"
+
+[performance]
+# Timing and Performance Settings
+debounce_time_ms = 20           # Debounce time in milliseconds for buttons
+encoder_debounce_ms = 5         # Debounce time for encoders
+matrix_scan_interval_ms = 10    # Interval between button matrix scans
+encoder_scan_interval_ms = 5    # Interval between encoder scans
+
+[build]
+# Build configuration
+micropython_version = "1.19.1"  # Target MicroPython version
+
+[tools.micropython]
+# MicroPython-specific tools configuration
+port = "/dev/ttyUSB0"           # Default port for flashing
+baud_rate = 115200              # Default baud rate for serial communication
