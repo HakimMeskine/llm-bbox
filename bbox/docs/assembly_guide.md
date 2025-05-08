@@ -101,7 +101,23 @@ This guide provides step-by-step instructions for assembling the ESP32 button bo
    - Check alignment and adjust if necessary
    - Solder the remaining pins
 
-6. **Status LEDs (LED1, LED2)**
+6. **RGB LEDs (LED3-LED22)**
+   - Pay attention to the orientation of the WS2812B LEDs (look for the corner marking)
+   - Apply flux to the pads
+   - Solder one pad first to hold the LED in place
+   - Check alignment and adjust if necessary
+   - Solder the remaining pads
+   - Ensure each LED is positioned directly under its corresponding button
+   - Clean flux residue before proceeding to the next LED
+
+7. **Level Shifter (U3)**
+   - Apply flux to the pads
+   - Align the 74HCT245 carefully
+   - Solder one pin to hold it in place
+   - Check alignment and adjust if necessary
+   - Solder the remaining pins
+
+8. **Status LEDs (LED1, LED2)**
    - Pay attention to the orientation (anode/cathode)
    - Insert the LEDs
    - Bend the leads slightly to hold them in place
@@ -144,6 +160,8 @@ This guide provides step-by-step instructions for assembling the ESP32 button bo
 - Verify that it's recognized as a USB HID device
 - Test all buttons, rotary encoders, and the funky switch
 - Verify that the status LEDs work correctly
+- Test the RGB LEDs by running the code and checking if they light up
+- Try different RGB LED effects to ensure they're all working properly
 
 ## Troubleshooting
 
@@ -173,6 +191,14 @@ This guide provides step-by-step instructions for assembling the ESP32 button bo
    - Check solder joints
    - Verify pin connections in the code
    - Test with a multimeter in continuity mode
+
+6. **RGB LEDs not working**
+   - Check orientation of each WS2812B LED (the corner marking indicates pin 1)
+   - Verify level shifter (74HCT245) is properly soldered
+   - Check the data line connections between LEDs
+   - Measure voltage at the LED power pins (should be 5V)
+   - Verify the 100Ω resistor is in place on the data line
+   - Check if RGB_LED_ENABLED is set to True in config.py
 
 ## Maintenance
 

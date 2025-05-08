@@ -17,10 +17,13 @@
 - Ensure adequate clearance around the module for the antenna
 - Keep the antenna area free of copper pour and other components
 
-### Button Matrix (5x4 = 20 buttons)
+### Button Matrix (5x4 = 20 buttons) with RGB LEDs
 - Arranged in a 5x4 grid on the top side
 - Spacing: 20mm between button centers (adjust as needed)
 - Diodes placed close to each button to minimize trace length
+- WS2812B RGB LED placed underneath each button
+- Use transparent or translucent keycaps to allow light to shine through
+- Ensure adequate spacing for LED heat dissipation
 
 ### Rotary Encoders
 - Placed on the top side, one on each side of the button matrix
@@ -35,12 +38,14 @@
 - Voltage regulator and associated components placed close to the USB-C connector
 - Reset and Boot buttons placed at accessible locations
 - Status LEDs placed where they are visible during operation
+- Level shifter (74HCT245) placed close to the ESP32 and the first RGB LED
+- Power filtering capacitors (100μF, 10μF) placed close to the power input for RGB LEDs
 
 ## Routing Guidelines
 
 ### General
 - Minimum trace width: 0.25mm for signal traces
-- Minimum trace width: 0.5mm for power traces
+- Minimum trace width: 0.5mm for power traces (1.0mm for RGB LED power)
 - Minimum clearance: 0.2mm between traces
 - Use ground plane on both layers
 - Keep traces as short as possible, especially for the button matrix
@@ -49,6 +54,8 @@
 - Keep USB data lines (D+ and D-) as short as possible and of equal length
 - Route clock signals (for encoders) with minimal length and away from noisy signals
 - Keep power traces wide and direct
+- RGB LED data lines should be kept as short as possible
+- Ensure the RGB LED data line has a 100Ω series resistor at the beginning of the chain
 
 ### Vias
 - Minimum via size: 0.6mm drill, 1.2mm pad
@@ -62,6 +69,9 @@
 - Include version number and date on the silkscreen
 - Add polarity indicators for components where applicable
 - Consider adding a cutout or slot for cable management if needed
+- Ensure adequate power distribution for RGB LEDs (they can draw significant current when all lit)
+- Add thermal relief for RGB LED connections to help with soldering and heat dissipation
+- Consider adding a separate power plane for the 5V supply to the RGB LEDs
 
 ## Pin Correction
 Note: There was a pin conflict in the schematic. GPIO4 was assigned to both Rotary Encoder 1's CLK and the Funky Switch's Up-Right direction. The corrected assignment is:

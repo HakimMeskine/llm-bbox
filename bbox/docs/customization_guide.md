@@ -200,31 +200,135 @@ Design considerations:
 
 You can add extra features to the button box:
 
-- **RGB LEDs**: For visual feedback or aesthetics
 - **OLED display**: To show current mode, button functions, etc.
 - **Additional inputs**: More buttons, joysticks, etc.
 - **Wireless connectivity**: Bluetooth or WiFi for wireless operation
 
-Example of adding RGB LEDs:
+## RGB LED Customization
 
-1. Add WS2812B RGB LEDs to the PCB design
-2. Connect the data pin to an available GPIO pin (e.g., GPIO21)
-3. Add the necessary code to control the LEDs:
+The button box includes WS2812B RGB LEDs under each button for visual feedback and aesthetics. Here's how to customize them:
+
+### Changing LED Colors
+
+You can change the default colors in the `config.py` file:
 
 ```python
-# Add to boot.py
-import neopixel
-
-# Initialize RGB LEDs
-num_leds = 20
-rgb_pin = machine.Pin(21, machine.Pin.OUT)
-rgb_leds = neopixel.NeoPixel(rgb_pin, num_leds)
-
-# Function to set LED colors
-def set_led_color(led_num, r, g, b):
-    rgb_leds[led_num] = (r, g, b)
-    rgb_leds.write()
+# Default LED colors (RGB values)
+DEFAULT_COLORS = {
+    "RED": (255, 0, 0),
+    "GREEN": (0, 255, 0),
+    "BLUE": (0, 0, 255),
+    "YELLOW": (255, 255, 0),
+    "CYAN": (0, 255, 255),
+    "MAGENTA": (255, 0, 255),
+    "WHITE": (255, 255, 255),
+    "OFF": (0, 0, 0)
+}
 ```
+
+Add your own custom colors by adding new entries to this dictionary.
+
+### Changing LED Effects
+
+The button box supports several LED effects that can be customized:
+
+1. **Static**: Solid colors for each LED
+2. **Breathing**: Pulsing effect that fades in and out
+3. **Rainbow**: Cycling through colors
+4. **Reactive**: LEDs light up when buttons are pressed
+5. **SimHub**: LEDs controlled by SimHub software
+
+You can modify these effects in the `rgb_leds.py` file or add your own custom effects.
+
+Example of adding a new "alternating" effect:
+
+```python
+def alternating_update():
+    """Update alternating effect - alternates between two colors"""
+    if np is None:
+        return
+    
+    # Calculate based on time
+    t = time.ticks_ms() / 500  # Time in 500ms increments
+    use_color_1 = (int(t) % 2) == 0
+    
+    with led_lock:
+        for i in range(config.RGB_LED_COUNT):
+            # Alternate between two colors based on LED position and time
+            if (i % 2 == 0) == use_color_1:
+                np[i] = config.DEFAULT_COLORS["RED"]
+            else:
+                np[i] = config.DEFAULT_COLORS["BLUE"]
+        np.write()
+
+# Add to update_effects function
+def update_effects():
+    # ...existing code...
+    elif current_effect == 5:  # New effect ID
+        # Alternating effect
+        alternating_update()
+```
+
+Then add the new effect to the config:
+
+```python
+# In config.py
+LED_EFFECTS = {
+    "STATIC": 0,
+    "BREATHING": 1,
+    "RAINBOW": 2,
+    "REACTIVE": 3,
+    "SIMHUB": 4,
+    "ALTERNATING": 5  # New effect
+}
+```
+
+### Button-Specific LED Colors
+
+You can set different colors for specific buttons by modifying the `main.py` file:
+
+```python
+# After initializing RGB LEDs in init_all_modules()
+# Set different colors for different buttons
+rgb_leds.set_button_color(1, config.DEFAULT_COLORS["RED"])
+rgb_leds.set_button_color(2, config.DEFAULT_COLORS["GREEN"])
+rgb_leds.set_button_color(3, config.DEFAULT_COLORS["BLUE"])
+rgb_leds.set_button_color(4, config.DEFAULT_COLORS["YELLOW"])
+# ... and so on
+```
+
+### SimHub Integration
+
+The RGB LEDs can be controlled by SimHub for game integration. To set this up:
+
+1. Enable WiFi in `config.py`:
+   ```python
+   WIFI_SSID = "your_wifi_network"
+   WIFI_PASSWORD = "your_wifi_password"
+   WIFI_ENABLED = True
+   ```
+
+2. Enable SimHub integration:
+   ```python
+   SIMHUB_ENABLED = True
+   SIMHUB_PORT = 8888  # UDP port for communication
+   ```
+
+3. In SimHub:
+   - Install the "Custom Serial" plugin
+   - Configure it to send UDP messages to your ESP32's IP address on port 8888
+   - Create custom effects that send JSON messages in this format:
+     ```json
+     {
+       "type": "led",
+       "leds": [
+         {"id": 0, "color": "#FF0000"},
+         {"id": 1, "color": "#00FF00"}
+       ]
+     }
+     ```
+
+This allows games to control your button box LEDs based on in-game events (e.g., red for damage, green for healing, etc.).
 
 ## Application-Specific Customization
 

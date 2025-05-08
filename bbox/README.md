@@ -2,7 +2,29 @@
 
 This project contains the design files and code for a button box based on the ESP32-WROOM-32 microcontroller. The button box features 20 push buttons arranged in a 5x4 grid, 2 rotary encoders with push buttons, and 1 RJXT1F 7-way encoder (funky switch) with push button.
 
-![ESP32 Button Box](docs/images/button_box_illustration.png)
+```
++-----------------------------------------------------+
+|                  ESP32 BUTTON BOX                   |
++-----------------------------------------------------+
+|                                                     |
+|  [B01] [B02] [B03] [B04]        +---+      +---+   |
+|                                  |ENC|      |ENC|   |
+|  [B05] [B06] [B07] [B08]        | 1 |      | 2 |   |
+|                                  +---+      +---+   |
+|  [B09] [B10] [B11] [B12]                           |
+|                                                     |
+|  [B13] [B14] [B15] [B16]                           |
+|                                      +-------+      |
+|  [B17] [B18] [B19] [B20]            | FUNKY |      |
+|                                      +-------+      |
+|                                                     |
+|  [LED1]                             [LED2]          |
+|                                                     |
++-----------------------------------------------------+
+|                    USB-C PORT                       |
++-----------------------------------------------------+
+```
+*ASCII art representation of the button box layout*
 
 ## Overview
 
@@ -21,7 +43,9 @@ The device connects to a computer via USB and appears as a standard HID (Human I
 - **20 Push Buttons**: Arranged in a 5x4 grid for easy access
 - **2 Rotary Encoders**: With push button functionality for additional inputs
 - **RJXT1F 7-way Encoder**: Provides directional control and push button
+- **RGB LEDs**: Individual RGB LED under each button for customizable lighting effects
 - **USB HID Interface**: Plug-and-play with any computer
+- **SimHub Integration**: Control RGB LEDs through SimHub for game integration
 - **Customizable**: Fully programmable using MicroPython
 - **Status LEDs**: Visual feedback for device status
 - **Open Source**: All design files and code are freely available
@@ -42,6 +66,7 @@ The device connects to a computer via USB and appears as a standard HID (Human I
   - `rotary_encoders.py`: Rotary encoder handling
   - `funky_switch.py`: Funky switch handling
   - `usb_hid.py`: USB HID functionality
+  - `rgb_leds.py`: RGB LED control and effects
   - `README.md`: Code documentation
 
 - `/docs`: Documentation and reference materials

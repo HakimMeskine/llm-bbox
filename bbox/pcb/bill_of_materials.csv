@@ -1,6 +1,6 @@
 Item,Quantity,Reference,Value,Footprint,Description,Supplier,Part Number
 1,1,U1,ESP32-WROOM-32,ESP32-WROOM-32,ESP32-WROOM-32 WiFi+BLE Module,Mouser,356-ESP32-WROOM-32E
-2,20,SW1-SW20,Push Button,6x6mm,Tactile Push Button (6x6mm),Mouser,653-B3F-1000
+2,20,SW1-SW20,Push Button,6x6mm,Tactile Push Button (6x6mm) with Transparent Keycap,Mouser,653-B3F-1000
 3,2,ENC1-ENC2,Rotary Encoder,EC11,Rotary Encoder with Push Button,Mouser,652-PEC11R-4215F-S24
 4,1,ENC3,RJXT1F,RJXT1F,7-way Funky Switch with Push Button,Aliexpress,RJXT1F-Encoder
 5,20,D1-D20,1N4148,DO-35,Small Signal Diode,Mouser,512-1N4148
@@ -16,3 +16,9 @@ Item,Quantity,Reference,Value,Footprint,Description,Supplier,Part Number
 15,2,R21-R22,330Ω,0805,Resistor 330Ω 1/8W,Mouser,603-RC0805FR-07330RL
 16,4,H1-H4,Mounting Hole,M3,M3 Mounting Hole,,,
 17,1,PCB,PCB,150x100mm,Printed Circuit Board,PCBWay,Custom
+18,20,LED3-LED22,WS2812B,5050,Addressable RGB LED,Mouser,485-2842
+19,1,U3,74HCT245,SOIC-20,Octal Bus Transceiver (Level Shifter),Mouser,595-SN74HCT245DW
+20,1,R23,100Ω,0805,Resistor 100Ω 1/8W (for LED data line),Mouser,603-RC0805FR-07100RL
+21,1,C8,100μF,1210,Electrolytic Capacitor 100μF 16V (for LED power),Mouser,80-C1210C107M4P
+22,1,C9,10μF,0805,Ceramic Capacitor 10μF 16V (for LED power),Mouser,80-C0805C106K4P
+23,20,CAP1-CAP20,Button Cap,6x6mm,Transparent/Translucent Keycap for Tactile Switch,Aliexpress,Transparent-Keycap

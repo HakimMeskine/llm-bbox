@@ -2,17 +2,20 @@
 
 ## Components List
 1. ESP32-WROOM-32 module
-2. 20 push buttons (arranged in 5x4 matrix)
-3. 2 rotary encoders with push buttons
-4. 1 RJXT1F 7-way encoder (funky switch) with push button
-5. Diodes (1N4148) - 20 pieces (one for each button in the matrix)
-6. Pull-up resistors (10kΩ) - for encoders and funky switch
-7. Decoupling capacitors (0.1μF) - for power supply stability
-8. USB-C connector for power and programming
-9. Voltage regulator (3.3V) - if needed
-10. Reset button
-11. Boot button (for programming mode)
-12. Status LEDs
+2. 20 push buttons (arranged in 5x4 matrix) with transparent/translucent keycaps
+3. 20 WS2812B addressable RGB LEDs (one for each button)
+4. 2 rotary encoders with push buttons
+5. 1 RJXT1F 7-way encoder (funky switch) with push button
+6. Diodes (1N4148) - 20 pieces (one for each button in the matrix)
+7. Pull-up resistors (10kΩ) - for encoders and funky switch
+8. Decoupling capacitors (0.1μF) - for power supply stability
+9. USB-C connector for power and programming
+10. Voltage regulator (3.3V) - if needed
+11. Reset button
+12. Boot button (for programming mode)
+13. Status LEDs
+14. Level shifter (74HCT245 or similar) - for 3.3V to 5V conversion for WS2812B data line
+15. Power filtering capacitors (100μF, 10μF) - for RGB LED power stability
 
 ## Pin Assignments
 
@@ -25,6 +28,9 @@
 ### Button Matrix (5x4 = 20 buttons)
 - Row pins (outputs): GPIO32, GPIO33, GPIO25, GPIO26, GPIO27
 - Column pins (inputs with pull-up): GPIO14, GPIO12, GPIO13, GPIO15
+
+### RGB LEDs (WS2812B)
+- Data Input: GPIO3 (through level shifter)
 
 ### Rotary Encoder 1
 - CLK (A): GPIO4
@@ -68,10 +74,20 @@ Each button connects between a row and column pin. A diode is placed in series w
 
 ### Power Supply
 - USB-C connector provides 5V
-- 3.3V regulator (if needed) to power the ESP32
+- 5V directly powers the WS2812B LEDs
+- 3.3V regulator to power the ESP32
 - Decoupling capacitors (0.1μF) near the ESP32 power pins
+- Power filtering capacitors (100μF, 10μF) for RGB LED power stability
 
 ### Programming Interface
 - Reset button connects between ESP32 EN pin and GND
 - Boot button connects between ESP32 GPIO0 and GND
 - Status LEDs connect to available GPIO pins through appropriate resistors
+
+### RGB LED Interface
+- WS2812B LEDs are connected in a daisy chain configuration
+- Data Out of each LED connects to Data In of the next LED
+- First LED's Data In connects to GPIO3 through a level shifter
+- All LEDs share common 5V and GND connections
+- 100Ω resistor in series with the data line for signal integrity
+- 100μF capacitor between 5V and GND near the first LED

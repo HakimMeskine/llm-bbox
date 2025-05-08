@@ -1,6 +1,6 @@
-# PCB Manufacturing Guide for ESP32 Button Box
+# PCB Manufacturing Guide for ESP32 Button Box with RGB LEDs
 
-This guide provides instructions for preparing the PCB design files for manufacturing with services like PCBway.
+This guide provides instructions for preparing the PCB design files for manufacturing with services like PCBway, including special considerations for the RGB LED integration.
 
 ## Recommended PCB Design Software
 
@@ -53,6 +53,7 @@ Ensure your design meets these minimum specifications for reliable manufacturing
 - Minimum drill size: 0.3mm (12 mil)
 - Minimum annular ring: 0.15mm (6 mil)
 - Minimum text size: 0.8mm (32 mil)
+- Power traces for RGB LEDs: 1.0mm (40 mil) minimum
 
 ## Submitting to PCB Manufacturer
 
@@ -70,12 +71,40 @@ Ensure your design meets these minimum specifications for reliable manufacturing
 4. Review the design preview provided by the manufacturer
 5. Confirm and place the order
 
+## RGB LED Integration Considerations
+
+When implementing the PCB design with WS2812B RGB LEDs, pay special attention to the following:
+
+1. **Power Distribution**:
+   - The WS2812B LEDs can draw up to 60mA each at full brightness (white)
+   - With 20 LEDs, the total current could reach 1.2A at maximum brightness
+   - Use wide traces (1.0mm minimum) for the 5V power distribution to the LEDs
+   - Consider using power planes or wide copper pours for the 5V and GND connections
+
+2. **Signal Integrity**:
+   - The WS2812B LEDs require precise timing for the data signal
+   - Keep the data lines as short as possible
+   - Include a 100Ω resistor in series with the data line near the first LED
+   - Use a level shifter (74HCT245) to convert the 3.3V signal from the ESP32 to 5V for the LEDs
+
+3. **Thermal Considerations**:
+   - Provide adequate spacing between LEDs to allow for heat dissipation
+   - Add thermal vias under or near the LEDs to help dissipate heat to the ground plane
+   - Consider the thermal impact when all LEDs are illuminated at full brightness
+
+4. **Layout Recommendations**:
+   - Place the LEDs directly under the transparent button caps
+   - Ensure consistent spacing and alignment for uniform lighting
+   - Consider adding a small reflector or diffuser for each LED to improve light distribution
+
 ## Additional Recommendations
 
 - Request a DFM (Design for Manufacturing) check from the manufacturer
 - Consider ordering a small quantity first to verify the design
 - Include a README file with your Gerber submission explaining any special requirements
 - If possible, include a PDF or image of the expected PCB layout for reference
+- Test the RGB LED circuit with a prototype before finalizing the design
+- Consider adding test points for the LED data line and power connections
 
 ## Common Issues to Avoid
 
@@ -84,3 +113,7 @@ Ensure your design meets these minimum specifications for reliable manufacturing
 - Missing or incorrect drill files
 - Incorrect layer assignment
 - Insufficient clearance around mounting holes
+- Inadequate power traces for the RGB LEDs
+- Missing level shifter for the LED data signal
+- Insufficient decoupling capacitors for power stability
+- Improper grounding that could cause noise in the LED signal

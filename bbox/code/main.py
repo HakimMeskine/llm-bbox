@@ -1,5 +1,6 @@
 # ESP32 Button Box - Main Application
 # This is the main entry point for the button box firmware
+# Updated to include RGB LED support for SimHub integration
 
 import time
 import machine
@@ -8,6 +9,7 @@ import button_matrix
 import rotary_encoders
 import funky_switch
 import usb_hid
+import rgb_leds
 
 # Status LEDs
 status_led1 = None
@@ -59,6 +61,17 @@ def init_all_modules():
     else:
         print("USB HID initialization failed or disabled")
     
+    # Initialize RGB LEDs
+    rgb_led_success = rgb_leds.init()
+    if rgb_led_success:
+        print("RGB LEDs initialized")
+        # Set initial effect
+        rgb_leds.set_effect(config.LED_EFFECTS["STATIC"])
+        # Set initial color (all blue)
+        rgb_leds.set_all_colors(config.DEFAULT_COLORS["BLUE"])
+    else:
+        print("RGB LED initialization failed or disabled")
+    
     # Reset all HID states
     usb_hid.reset_all()
     
@@ -76,6 +89,9 @@ def process_button_matrix():
         
         # Map button to HID button
         usb_hid.set_button(button_num, True)
+        
+        # Trigger RGB LED effect for the button
+        rgb_leds.button_pressed(button_num)
         
         # Blink status LED for visual feedback
         blink_status_led(status_led2, 1, 50, 0)
@@ -181,6 +197,9 @@ def main_loop():
     # Turn on status LED 1 to indicate running
     status_led1.value(1)
     
+    # Variables for timing
+    last_effect_update = time.ticks_ms()
+    
     try:
         while True:
             # Process inputs
@@ -190,6 +209,12 @@ def main_loop():
             
             # Send HID report
             usb_hid.send_report()
+            
+            # Update RGB LED effects (every 50ms)
+            current_time = time.ticks_ms()
+            if time.ticks_diff(current_time, last_effect_update) >= 50:
+                rgb_leds.update_effects()
+                last_effect_update = current_time
             
             # Small delay to prevent CPU hogging
             time.sleep_ms(config.MATRIX_SCAN_INTERVAL_MS)

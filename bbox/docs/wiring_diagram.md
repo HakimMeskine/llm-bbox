@@ -203,12 +203,99 @@ GND ─────────────────────────�
 - Status LED 1: GPIO10 → 330Ω resistor → LED → GND
 - Status LED 2: GPIO9 → 330Ω resistor → LED → GND
 
-## Power Supply
+## RGB LED Wiring
 
-The ESP32 is powered via the USB-C connector, which provides 5V. A voltage regulator (AMS1117-3.3) converts this to 3.3V for the ESP32 and other components.
+The button box includes 20 WS2812B RGB LEDs (one under each button) connected in a daisy chain configuration. The data signal from the ESP32 passes through a level shifter to convert from 3.3V to 5V logic.
+
+### RGB LED Data Connection
+
+- ESP32 GPIO3 → 74HCT245 Level Shifter → 100Ω resistor → LED1 DIN
+- LED1 DOUT → LED2 DIN
+- LED2 DOUT → LED3 DIN
+- ...and so on for all 20 LEDs
+
+### Level Shifter Connections
 
 ```
-USB-C 5V ──────┬─────────────────────────────────────────────────
+                 VCC (5V)
+                    │
+                    ▼
+                 ┌─────┐
+                 │     │
+ESP32 GPIO3 ──── │A1 B1│ ──── 100Ω ──── LED1 DIN
+                 │     │
+                 │     │
+ESP32 3.3V ───── │VccA │
+                 │     │
+                 │     │
+5V ────────────── │VccB │
+                 │     │
+                 │     │
+GND ───────────── │GND  │
+                 │     │
+                 │     │
+ESP32 3.3V ───── │DIR  │
+                 │     │
+                 │     │
+ESP32 3.3V ───── │OE   │
+                 │     │
+                 └─────┘
+                74HCT245
+```
+
+### RGB LED Power Connections
+
+All RGB LEDs share common power connections:
+
+- 5V → 100μF capacitor → 10μF capacitor → LED1 VCC, LED2 VCC, ..., LED20 VCC
+- GND → LED1 GND, LED2 GND, ..., LED20 GND
+
+### RGB LED Schematic
+
+```
+     5V
+     │
+     ▼
+  100μF   10μF
+     │      │
+     │      │
+     └──────┴───────┬───────────┬─────────── ... ───┬─────────── VCC
+                    │           │                   │
+                    ▼           ▼                   ▼
+                   LED1        LED2                LED20
+                    │           │                   │
+     ESP32          │           │                   │
+     GPIO3          │           │                   │
+       │            │           │                   │
+       ▼            │           │                   │
+   74HCT245         │           │                   │
+       │            │           │                   │
+       ▼            │           │                   │
+     100Ω           │           │                   │
+       │            │           │                   │
+       ▼            │           │                   │
+      DIN          DOUT        DOUT                DOUT
+       │            │           │                   │
+       │            │           │                   │
+       └────────────►           │                   │
+                    │           │                   │
+                    └───────────►                   │
+                                                    │
+                                ... ────────────────►
+                                │
+                                │
+     GND ────────────────────────┴───────────┴─────────── ... ───┴─────────── GND
+```
+
+## Power Supply
+
+The ESP32 is powered via the USB-C connector, which provides 5V. A voltage regulator (AMS1117-3.3) converts this to 3.3V for the ESP32 and other components. The 5V from USB is also used directly to power the RGB LEDs.
+
+```
+                                                 ┌─── To RGB LEDs (VCC)
+                                                 │
+                                                 │
+USB-C 5V ──────┬─────────────────────────────────┴─────────────────────────
                │
                │
                ▼
@@ -217,15 +304,26 @@ USB-C 5V ──────┬────────────────�
                │
                ▼
 3.3V ──────────┬─────────────────────────────────────────────────
-               │
-               │
-               ▼
-           0.1μF Cap
-               │
-               │
-               ▼
-GND ───────────┴─────────────────────────────────────────────────
+               │                                   │
+               │                                   │
+               ▼                                   │
+           0.1μF Cap                               │
+               │                                   │
+               │                                   │
+               ▼                                   ▼
+GND ───────────┴───────────────────────────────────┴─────────────────────────
+                                                   │
+                                                   │
+                                                   └─── To RGB LEDs (GND)
 ```
+
+### Power Considerations for RGB LEDs
+
+- Each WS2812B LED can draw up to 60mA at full brightness (white)
+- With 20 LEDs, the total current could reach 1.2A at maximum brightness
+- The USB-C connector can typically provide up to 3A, which is sufficient
+- Power filtering capacitors (100μF, 10μF) are added near the RGB LEDs to stabilize the power supply
+- Wide traces (1.0mm minimum) are used for the 5V and GND connections to the RGB LEDs
 
 ## Programming Interface
 

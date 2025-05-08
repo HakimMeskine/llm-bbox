@@ -11,6 +11,7 @@ This directory contains the MicroPython code for the ESP32 button box. The code 
 - `rotary_encoders.py`: Handles the two rotary encoders and their push buttons
 - `funky_switch.py`: Handles the RJXT1F 7-way encoder (funky switch)
 - `usb_hid.py`: Handles USB HID functionality for sending input data to the host computer
+- `rgb_leds.py`: Controls the WS2812B RGB LEDs and provides various lighting effects
 
 ## Setting Up MicroPython on ESP32
 
@@ -61,15 +62,18 @@ There are several tools you can use to upload the code to the ESP32:
    ampy --port /dev/ttyUSB0 put rotary_encoders.py
    ampy --port /dev/ttyUSB0 put funky_switch.py
    ampy --port /dev/ttyUSB0 put usb_hid.py
+   ampy --port /dev/ttyUSB0 put rgb_leds.py
    ```
 
 ## Configuration
 
 The `config.py` file contains all the pin assignments and configuration parameters. You may need to adjust these based on your specific wiring and requirements:
 
-- Pin assignments for the button matrix, rotary encoders, and funky switch
+- Pin assignments for the button matrix, rotary encoders, funky switch, and RGB LEDs
 - Debounce times and scan intervals
 - USB HID configuration
+- RGB LED effects and colors
+- SimHub integration settings
 - WiFi and Bluetooth settings (if needed)
 
 ## Usage
@@ -98,3 +102,22 @@ You can customize the behavior of the button box by modifying the code:
 - Change the button mapping in `main.py`
 - Adjust the debounce times in `config.py`
 - Modify the USB HID report descriptor in `usb_hid.py` to change how the device appears to the host computer
+- Customize RGB LED effects and colors in `rgb_leds.py` and `config.py`
+- Set up SimHub integration for game-controlled lighting effects
+
+### RGB LED Features
+
+The RGB LED module (`rgb_leds.py`) provides the following features:
+
+- Individual control of 20 WS2812B RGB LEDs (one under each button)
+- Multiple lighting effects:
+  - Static: Solid colors
+  - Breathing: Pulsing effect
+  - Rainbow: Cycling through colors
+  - Reactive: LEDs light up when buttons are pressed
+  - SimHub: LEDs controlled by SimHub software
+- Button-specific color mapping
+- Brightness control
+- SimHub integration via WiFi for game-controlled lighting
+
+See the `customization_guide.md` for detailed information on customizing the RGB LED functionality.
