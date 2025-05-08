@@ -1,0 +1,18 @@
+Item,Quantity,Reference,Value,Footprint,Description,Supplier,Part Number
+1,1,U1,ESP32-WROOM-32,ESP32-WROOM-32,ESP32-WROOM-32 WiFi+BLE Module,Mouser,356-ESP32-WROOM-32E
+2,20,SW1-SW20,Push Button,6x6mm,Tactile Push Button (6x6mm),Mouser,653-B3F-1000
+3,2,ENC1-ENC2,Rotary Encoder,EC11,Rotary Encoder with Push Button,Mouser,652-PEC11R-4215F-S24
+4,1,ENC3,RJXT1F,RJXT1F,7-way Funky Switch with Push Button,Aliexpress,RJXT1F-Encoder
+5,20,D1-D20,1N4148,DO-35,Small Signal Diode,Mouser,512-1N4148
+6,20,R1-R20,10kΩ,0805,Resistor 10kΩ 1/8W,Mouser,603-RC0805FR-0710KL
+7,5,C1-C5,0.1μF,0805,Ceramic Capacitor 0.1μF 50V,Mouser,80-C0805C104K5R
+8,1,J1,USB-C,USB-C-SMD,USB Type-C Connector,Mouser,640-USB4085-GF-A
+9,1,U2,AMS1117-3.3,SOT-223,3.3V Voltage Regulator,Mouser,511-LD1117S33
+10,1,C6,10μF,0805,Ceramic Capacitor 10μF 16V,Mouser,80-C0805C106K4P
+11,1,C7,22μF,0805,Ceramic Capacitor 22μF 16V,Mouser,80-C0805C226M4P
+12,1,SW21,Reset Button,6x6mm,Tactile Push Button (6x6mm),Mouser,653-B3F-1000
+13,1,SW22,Boot Button,6x6mm,Tactile Push Button (6x6mm),Mouser,653-B3F-1000
+14,2,LED1-LED2,LED,0805,Status LED,Mouser,710-150080RS75000
+15,2,R21-R22,330Ω,0805,Resistor 330Ω 1/8W,Mouser,603-RC0805FR-07330RL
+16,4,H1-H4,Mounting Hole,M3,M3 Mounting Hole,,,
+17,1,PCB,PCB,150x100mm,Printed Circuit Board,PCBWay,Custom

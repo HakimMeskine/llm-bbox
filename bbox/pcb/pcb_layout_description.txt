@@ -1,0 +1,69 @@
+# ESP32 Button Box - PCB Layout Description
+
+## Board Specifications
+- Dimensions: 150mm x 100mm (adjust as needed based on final component placement)
+- Layers: 2 (Top and Bottom)
+- Material: FR-4
+- Thickness: 1.6mm
+- Copper weight: 1oz
+- Surface finish: HASL (Hot Air Solder Leveling) or ENIG (Electroless Nickel Immersion Gold)
+- Solder mask: Green (or preferred color)
+- Silkscreen: White (or preferred color)
+
+## Component Placement
+
+### ESP32-WROOM-32 Module
+- Placed centrally on the top side of the PCB
+- Ensure adequate clearance around the module for the antenna
+- Keep the antenna area free of copper pour and other components
+
+### Button Matrix (5x4 = 20 buttons)
+- Arranged in a 5x4 grid on the top side
+- Spacing: 20mm between button centers (adjust as needed)
+- Diodes placed close to each button to minimize trace length
+
+### Rotary Encoders
+- Placed on the top side, one on each side of the button matrix
+- Ensure adequate spacing for knobs
+
+### RJXT1F 7-way Encoder (Funky Switch)
+- Placed on the top side, preferably at a convenient location for thumb operation
+- Ensure adequate clearance for operation
+
+### Power and Programming
+- USB-C connector placed at the edge of the PCB
+- Voltage regulator and associated components placed close to the USB-C connector
+- Reset and Boot buttons placed at accessible locations
+- Status LEDs placed where they are visible during operation
+
+## Routing Guidelines
+
+### General
+- Minimum trace width: 0.25mm for signal traces
+- Minimum trace width: 0.5mm for power traces
+- Minimum clearance: 0.2mm between traces
+- Use ground plane on both layers
+- Keep traces as short as possible, especially for the button matrix
+
+### Critical Traces
+- Keep USB data lines (D+ and D-) as short as possible and of equal length
+- Route clock signals (for encoders) with minimal length and away from noisy signals
+- Keep power traces wide and direct
+
+### Vias
+- Minimum via size: 0.6mm drill, 1.2mm pad
+- Use vias to connect ground planes between layers
+- Avoid vias in pads unless necessary
+
+## Special Considerations
+- Add mounting holes at the corners of the PCB
+- Include a ground pour on both layers, connected with vias
+- Add test points for critical signals
+- Include version number and date on the silkscreen
+- Add polarity indicators for components where applicable
+- Consider adding a cutout or slot for cable management if needed
+
+## Pin Correction
+Note: There was a pin conflict in the schematic. GPIO4 was assigned to both Rotary Encoder 1's CLK and the Funky Switch's Up-Right direction. The corrected assignment is:
+- Rotary Encoder 1 CLK (A): GPIO4 (unchanged)
+- Funky Switch Up-Right: GPIO39 (changed from GPIO4)

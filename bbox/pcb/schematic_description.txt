@@ -1,0 +1,77 @@
+# ESP32 Button Box - Schematic Description
+
+## Components List
+1. ESP32-WROOM-32 module
+2. 20 push buttons (arranged in 5x4 matrix)
+3. 2 rotary encoders with push buttons
+4. 1 RJXT1F 7-way encoder (funky switch) with push button
+5. Diodes (1N4148) - 20 pieces (one for each button in the matrix)
+6. Pull-up resistors (10kΩ) - for encoders and funky switch
+7. Decoupling capacitors (0.1μF) - for power supply stability
+8. USB-C connector for power and programming
+9. Voltage regulator (3.3V) - if needed
+10. Reset button
+11. Boot button (for programming mode)
+12. Status LEDs
+
+## Pin Assignments
+
+### ESP32-WROOM-32 Module
+- Power: 3.3V
+- Ground: GND
+- USB Data+: GPIO19
+- USB Data-: GPIO18
+
+### Button Matrix (5x4 = 20 buttons)
+- Row pins (outputs): GPIO32, GPIO33, GPIO25, GPIO26, GPIO27
+- Column pins (inputs with pull-up): GPIO14, GPIO12, GPIO13, GPIO15
+
+### Rotary Encoder 1
+- CLK (A): GPIO4
+- DT (B): GPIO16
+- SW (Push button): GPIO17
+
+### Rotary Encoder 2
+- CLK (A): GPIO5
+- DT (B): GPIO18
+- SW (Push button): GPIO19
+
+### RJXT1F 7-way Encoder (Funky Switch)
+- Up: GPIO21
+- Down: GPIO22
+- Left: GPIO23
+- Right: GPIO2
+- Up-Left: GPIO0
+- Up-Right: GPIO4
+- Down-Left: GPIO35
+- Down-Right: GPIO34
+- Push button: GPIO36
+
+## Connection Details
+
+### Button Matrix
+Each button connects between a row and column pin. A diode is placed in series with each button to prevent "ghosting" (false button presses).
+- Row pins are set as outputs (LOW for scanning, HIGH otherwise)
+- Column pins are set as inputs with pull-up resistors
+- Diodes are oriented with cathode toward the row pin
+
+### Rotary Encoders
+- Connect CLK and DT pins to GPIO pins
+- Connect SW (push button) pin to GPIO pin
+- Connect common pin to GND
+- Use 10kΩ pull-up resistors on CLK, DT, and SW pins
+
+### RJXT1F 7-way Encoder (Funky Switch)
+- Connect each direction pin to a GPIO pin
+- Connect common pin to GND
+- Use 10kΩ pull-up resistors on all pins
+
+### Power Supply
+- USB-C connector provides 5V
+- 3.3V regulator (if needed) to power the ESP32
+- Decoupling capacitors (0.1μF) near the ESP32 power pins
+
+### Programming Interface
+- Reset button connects between ESP32 EN pin and GND
+- Boot button connects between ESP32 GPIO0 and GND
+- Status LEDs connect to available GPIO pins through appropriate resistors
